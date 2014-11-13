@@ -32,7 +32,7 @@ lookup(Key, {_, Tree}) ->
 subtree_lookup(_, nil) ->
     none;
 subtree_lookup(Key, {_, {Stored_key, Value}, _, _}) when Key == Stored_key ->
-    Value;
+    {value, Value};
 subtree_lookup(Key, {_, {Stored_key, _}, Left, _}) when Key < Stored_key ->
     subtree_lookup(Key, Left);
 subtree_lookup(Key, {_, _, _, Right}) ->
