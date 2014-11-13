@@ -38,7 +38,7 @@ new_tree(_Config) ->
 lookup1(_Config) ->
     Subtree = {1, {1, a}, nil, nil},
     Tree = {1, Subtree},
-    a = avl_tree:lookup(1, Tree),
+    {value, a} = avl_tree:lookup(1, Tree),
     ok.
 
 %% ===================================================================
