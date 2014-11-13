@@ -1,0 +1,8 @@
+/logs
+/deps
+/.eunit
+ebin
+*.beam
+*#
+*~
+*.sw?
