@@ -1,6 +1,7 @@
 -module(avl_tree).
 
 -export([
+         lookup/2,
          new/0
         ]).
 
@@ -19,4 +20,21 @@
 
 new() ->
     {0, nil}.
+
+-spec lookup(Key, Tree) -> Value when
+      Tree :: tree(),
+      Key :: key(),
+      Value :: none | {value, value()}.
+
+lookup(Key, {_, Tree}) ->
+    subtree_lookup(Key, Tree).
+
+subtree_lookup(_, nil) ->
+    none;
+subtree_lookup(Key, {_, {Stored_key, Value}, _, _}) when Key == Stored_key ->
+    Value;
+subtree_lookup(Key, {_, {Stored_key, _}, Left, _}) when Key < Stored_key ->
+    subtree_lookup(Key, Left);
+subtree_lookup(Key, {_, _, _, Right}) ->
+    subtree_lookup(Key, Right).
 
