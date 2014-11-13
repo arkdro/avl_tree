@@ -1,6 +1,7 @@
 -module(avl_tree).
 
 -export([
+         size/1,
          lookup/2,
          new/0
         ]).
@@ -37,4 +38,11 @@ subtree_lookup(Key, {_, {Stored_key, _}, Left, _}) when Key < Stored_key ->
     subtree_lookup(Key, Left);
 subtree_lookup(Key, {_, _, _, Right}) ->
     subtree_lookup(Key, Right).
+
+-spec size(Tree) -> Size when
+      Tree :: tree(),
+      Size :: size().
+
+size({Size, _}) ->
+    Size.
 
