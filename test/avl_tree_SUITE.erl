@@ -20,6 +20,7 @@ groups() ->
                 {group, read}
                ]},
      {read, [], [
+                 size,
                  new_tree,
                  lookup4,
                  lookup3,
@@ -68,6 +69,11 @@ lookup4(_Config) ->
     {value, b} = avl_tree:lookup(5, Tree),
     {value, d} = avl_tree:lookup(10, Tree),
     {value, c} = avl_tree:lookup(50, Tree),
+    ok.
+
+size(_) ->
+    0 = avl_tree:size(avl_tree:new()),
+    4 = avl_tree:size({4, stub}),
     ok.
 
 %% ===================================================================
