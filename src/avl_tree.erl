@@ -87,8 +87,13 @@ rebalance(2, {_, _, Smaller, _} = Subtree) ->
         right ->
             left_right_rotation(Subtree)
     end;
-rebalance(Balance, {Height, {Key, Value}, Smaller, Bigger}) ->
-    erlang:error(not_implemented).
+rebalance(-2, {_, _, _, Bigger} = Subtree) ->
+    case find_longer_side(Bigger) of
+        left ->
+            right_left_rotation(Subtree);
+        right ->
+            right_right_rotation(Subtree)
+    end.
 
 new_subtree(Key, Val) ->
     {0, new_root_node(Key, Val), nil, nil}.
@@ -137,5 +142,11 @@ left_left_rotation(Subtree) ->
     erlang:error(not_implemented).
 
 left_right_rotation(Subtree) ->
+    erlang:error(not_implemented).
+
+right_left_rotation(Subtree) ->
+    erlang:error(not_implemented).
+
+right_right_rotation(Subtree) ->
     erlang:error(not_implemented).
 
