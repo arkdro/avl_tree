@@ -93,6 +93,10 @@ new_subtree(Key, Val) ->
 new_root_node(Key, Val) ->
     {Key, Val}.
 
+height(nil) ->
+    -1;
+height({_, _, nil, nil}) ->
+    0;
 height({Height, _, _, _}) ->
     Height.
 
