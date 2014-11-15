@@ -58,24 +58,27 @@ insert(Key, Value, {Size, Subtree}) ->
     Subtree2 = insert1(Key, Value, Subtree),
     {Size + 1, Subtree2}.
 
-insert1(Key, Value, {_, {Key0, _}=Root, Smaller, Bigger})
-  when Key < Key0 ->
+insert1(Key, Value, {_, {Key0, _}=Root, Smaller, Bigger}) when Key < Key0 ->
     Smaller2 = insert1(Key, Value, Smaller),
-    Height2 = calc_new_height(Smaller2, Bigger),
-    Balance = height(Smaller2) - height(Bigger),
-    New_subtree = {Height2, Root, Smaller2, Bigger},
-    case is_balanced(Balance) of
-        true ->
-            New_subtree;
-        false ->
-            rebalance(Balance, New_subtree)
-    end;
-insert1(Key, Value, {Height, {Key0, _}, Smaller, Bigger}) when Key > Key0 ->
-    erlang:error(not_implemented);
+    proceed_with_balance_common(Root, Smaller2, Bigger);
+insert1(Key, Value, {_, {Key0, _}=Root, Smaller, Bigger}) when Key > Key0 ->
+    Bigger2 = insert1(Key, Value, Bigger),
+    proceed_with_balance_common(Root, Smaller, Bigger2);
 insert1(Key, Value, nil) ->
     new_subtree(Key, Value);
 insert1(Key, _, _) ->
     erlang:error({key_exists, Key}).
+
+proceed_with_balance_common(Root, Smaller, Bigger) ->
+    Height2 = calc_new_height(Smaller, Bigger),
+    Balance = height(Smaller) - height(Bigger),
+    Subtree = {Height2, Root, Smaller, Bigger},
+    case is_balanced(Balance) of
+        true ->
+            Subtree;
+        false ->
+            rebalance(Balance, Subtree)
+    end.
 
 rebalance(2, {_, _, Smaller, _} = Subtree) ->
     case find_longer_side(Smaller) of
