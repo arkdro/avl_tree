@@ -122,6 +122,9 @@ get_smaller_subtree({_, _, Smaller, _}) ->
 get_bigger_subtree({_, _, _, Bigger}) ->
     Bigger.
 
+get_root({_, Root, _, _}) ->
+    Root.
+
 which_longer(Subtree1, Subtree2) ->
     H1 = height(Subtree1),
     H2 = height(Subtree2),
@@ -138,8 +141,14 @@ calc_new_height(Subtree1, Subtree2) ->
     H2 = height(Subtree2),
     erlang:max(H1, H2) + 1.
 
-left_left_rotation(Subtree) ->
-    erlang:error(not_implemented).
+left_left_rotation({_, Root, Smaller, Bigger}) ->
+    Smaller_smaller = get_smaller_subtree(Smaller), %% 3(A, B)
+    Smaller_bigger = get_bigger_subtree(Smaller), %% C
+    Bigger2 = {calc_new_height(Smaller_bigger, Bigger),
+               Root, Smaller_bigger, Bigger}, %% 5(C, D)
+    {calc_new_height(Smaller_smaller, Bigger2),
+     get_root(Smaller),
+     Smaller_smaller, Bigger2}. %% 4(3, 5)
 
 left_right_rotation(Subtree) ->
     erlang:error(not_implemented).
