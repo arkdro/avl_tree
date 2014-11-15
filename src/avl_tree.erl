@@ -156,6 +156,12 @@ left_right_rotation(Subtree) ->
 right_left_rotation(Subtree) ->
     erlang:error(not_implemented).
 
-right_right_rotation(Subtree) ->
-    erlang:error(not_implemented).
+right_right_rotation({_, Root, Smaller, Bigger}) ->
+    Bigger_bigger = get_bigger_subtree(Bigger), %% 5(C, D)
+    Bigger_smaller = get_smaller_subtree(Bigger), %% B
+    Smaller2 = {calc_new_height(Smaller, Bigger_smaller),
+                Root, Smaller, Bigger_smaller}, %% 3(A, B)
+    {calc_new_height(Smaller2, Bigger_bigger),
+     get_root(Bigger),
+     Smaller2, Bigger_bigger}. %% 4(3, 5)
 
