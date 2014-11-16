@@ -5,6 +5,7 @@
          delete/2,
          insert/3,
          size/1,
+         member/2,
          lookup/2,
          new/0
         ]).
@@ -193,6 +194,18 @@ right_right_rotation({_, Root, Smaller, Bigger}) ->
     Bigger_smaller = get_smaller_subtree(Bigger), %% B
     Smaller2 = make_subtree(Root, Smaller, Bigger_smaller), %% 3(A, B)
     make_subtree(get_root(Bigger), Smaller2, Bigger_bigger). %% 4(3, 5)
+
+-spec member(Key, Tree) -> boolean() when
+      Tree :: tree(),
+      Key :: key().
+
+member(Key, Tree) ->
+    case lookup(Key, Tree) of
+        {value, _} ->
+            true;
+        none ->
+            false
+    end.
 
 %% assume the key is in the tree
 -spec delete(Key, Tree) -> Tree2 when
