@@ -96,7 +96,10 @@ rebalance(-2, {_, _, _, Bigger} = Subtree) ->
     end.
 
 new_subtree(Key, Val) ->
-    {0, new_root_node(Key, Val), nil, nil}.
+    make_subtree(new_root_node(Key, Val), nil, nil).
+
+make_subtree(Root, Smaller, Bigger) ->
+    {calc_new_height(Smaller, Bigger), Root, Smaller, Bigger}.
 
 new_root_node(Key, Val) ->
     {Key, Val}.
