@@ -37,6 +37,7 @@ groups() ->
                   insert1
                  ]},
      {read, [], [
+                 smallest,
                  member,
                  size,
                  new_tree,
@@ -97,6 +98,19 @@ size(_) ->
 member(_) ->
     true = avl_tree:member(15, tree1()),
     false = avl_tree:member(99, tree1()),
+    ok.
+
+smallest(_) ->
+    L = [{12, a},
+         {15, b},
+         {20, c},
+         {5, d},
+         {1, e},
+         {9, f},
+         {7, g},
+         {10, h}],
+    Tree = tree1(L),
+    {1, e} = avl_tree:smallest(Tree),
     ok.
 
 insert1(_) ->
