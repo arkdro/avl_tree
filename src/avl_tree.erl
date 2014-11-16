@@ -4,6 +4,7 @@
          from_list/1,
          take_smallest/1,
          smallest/1,
+         take_largest/1,
          largest/1,
          delete/2,
          delete_any/2,
@@ -322,6 +323,23 @@ smallest1({_, Root, nil, _}) ->
     Root;
 smallest1({_, _, Smaller, _}) ->
     smallest1(Smaller).
+
+%% assume the tree is non-empty
+-spec take_largest(Tree) -> {Node, Tree2} when
+      Tree :: tree(),
+      Tree2 :: tree(),
+      Node :: root_node().
+
+take_largest({Size, Subtree}) ->
+    {Largest, Subtree2} = take_largest1(Subtree),
+    Tree2 = {Size - 1, Subtree2},
+    {Largest, Tree2}.
+
+take_largest1({_, Root, Smaller, nil}) ->
+    {Root, Smaller};
+take_largest1({_, Root, Smaller, Bigger}) ->
+    {Largest, Bigger2} = take_largest1(Bigger),
+    {Largest, make_subtree(Root, Smaller, Bigger2)}.
 
 %% assume the tree is non-empty
 -spec largest(Tree) -> Node when
