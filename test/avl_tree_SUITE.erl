@@ -3,6 +3,8 @@
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("common_test/include/ct.hrl").
 
+-define(ASSERT, true).
+
 -compile([export_all]).
 
 suite() ->
@@ -131,7 +133,7 @@ insert3(_) ->
     T0 = avl_tree:new(),
     T1 = avl_tree:insert(3, a, T0),
     T2 = avl_tree:insert(5, b, T1),
-    ?_assertError(any_reason, avl_tree:insert(5, c, T2)),
+    ?assertError({key_exists, 5}, avl_tree:insert(5, c, T2)),
     ok.
 
 take_smallest1(_) ->
