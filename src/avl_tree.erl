@@ -2,6 +2,7 @@
 
 -export([
          take_smallest/1,
+         delete/2,
          insert/3,
          size/1,
          lookup/2,
@@ -193,6 +194,36 @@ right_right_rotation({_, Root, Smaller, Bigger}) ->
     Smaller2 = make_subtree(Root, Smaller, Bigger_smaller), %% 3(A, B)
     make_subtree(get_root(Bigger), Smaller2, Bigger_bigger). %% 4(3, 5)
 
+%% assume the key is in the tree
+-spec delete(Key, Tree) -> Tree2 when
+      Tree :: tree(),
+      Tree2 :: tree(),
+      Key :: key().
+
+delete(Key, {Size, Subtree}) ->
+    {Size - 1, delete1(Key, Subtree)}.
+
+delete1(Key, {_, {Key0, _}=Root, Smaller, Bigger}) when Key < Key0 ->
+    Smaller2 = delete1(Key, Smaller),
+    proceed_with_balance_common(Root, Smaller2, Bigger);
+delete1(Key, {_, {Key0, _}=Root, Smaller, Bigger}) when Key > Key0 ->
+    Bigger2 = delete1(Key, Bigger),
+    proceed_with_balance_common(Root, Smaller, Bigger2);
+delete1(Key, nil) ->
+    erlang:error({no_key, Key});
+delete1(_Key, Subtree) ->
+    proceed_delete1(Subtree).
+
+proceed_delete1({_, _, Smaller, nil}) ->
+    Smaller;
+proceed_delete1({_, _, nil, Bigger}) ->
+    Bigger;
+proceed_delete1({_, _, Smaller, Bigger}) ->
+    {Successor, Bigger2} = take_successor(Bigger),
+    make_subtree(Successor, Smaller, Bigger2).
+
+take_successor(Subtree) ->
+    take_smallest1(Subtree).
 
 -spec take_smallest(Tree) -> {Node, Tree2} when
       Tree :: tree(),
