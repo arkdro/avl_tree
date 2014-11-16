@@ -38,7 +38,8 @@ groups() ->
                   insert1
                  ]},
      {read, [], [
-                 to_list,
+                 to_list2,
+                 to_list1,
                  largest,
                  smallest,
                  member,
@@ -286,7 +287,7 @@ from_list(_) ->
     Tree = avl_tree:from_list(L),
     ok.
 
-to_list(_) ->
+to_list1(_) ->
     L = [{12, a},
          {15, b},
          {20, c},
@@ -298,6 +299,10 @@ to_list(_) ->
     Tree = tree1(L),
     Sorted = lists:sort(L),
     Sorted = avl_tree:to_list(Tree),
+    ok.
+
+to_list2(_) ->
+    [] = avl_tree:to_list(avl_tree:new()),
     ok.
 
 %% ===================================================================
