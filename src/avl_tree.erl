@@ -4,6 +4,7 @@
          from_list/1,
          take_smallest/1,
          smallest/1,
+         largest/1,
          delete/2,
          delete_any/2,
          insert/3,
@@ -321,4 +322,17 @@ smallest1({_, Root, nil, _}) ->
     Root;
 smallest1({_, _, Smaller, _}) ->
     smallest1(Smaller).
+
+%% assume the tree is non-empty
+-spec largest(Tree) -> Node when
+      Tree :: tree(),
+      Node :: root_node().
+
+largest({_, Subtree}) ->
+    largest1(Subtree).
+
+largest1({_, Root, _, nil}) ->
+    Root;
+largest1({_, _, _, Bigger}) ->
+    largest1(Bigger).
 
