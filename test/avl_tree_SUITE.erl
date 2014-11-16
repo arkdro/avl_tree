@@ -34,6 +34,7 @@ groups() ->
                   insert1
                  ]},
      {read, [], [
+                 member,
                  size,
                  new_tree,
                  lookup4,
@@ -88,6 +89,11 @@ lookup4(_Config) ->
 size(_) ->
     0 = avl_tree:size(avl_tree:new()),
     4 = avl_tree:size({4, stub}),
+    ok.
+
+member(_) ->
+    true = avl_tree:member(15, tree1()),
+    false = avl_tree:member(99, tree1()),
     ok.
 
 insert1(_) ->
