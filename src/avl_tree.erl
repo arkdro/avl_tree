@@ -2,6 +2,7 @@
 
 -export([
          from_list/1,
+         to_list/1,
          take_smallest/1,
          smallest/1,
          take_largest/1,
@@ -67,6 +68,26 @@ from_list(List) ->
                 insert_any(K, V, Acc)
         end,
     lists:foldl(F, new(), List).
+
+-spec to_list(Tree) -> List when
+      List :: [{Key, Value}],
+      Key :: key(),
+      Value :: value(),
+      Tree :: tree().
+
+to_list({_, Subtree}) ->
+    to_list(Subtree, []).
+
+to_list(nil, L) ->
+    L;
+to_list({_, Root, Smaller, Bigger}, L) ->
+    to_list(Smaller, [{key(Root), value(Root)} | to_list(Bigger, L)]).
+
+key({Key, _}) ->
+    Key.
+
+value({_, Value}) ->
+    Value.
 
 -spec insert_any(Key, Value, Tree) -> Tree2 when
       Tree :: tree(),
