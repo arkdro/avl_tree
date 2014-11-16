@@ -24,6 +24,7 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  delete2,
                   delete1,
                   take_smallest1,
                   insert3,
@@ -162,6 +163,12 @@ delete1(_) ->
             {0, {6, a}, nil, nil}
            }},
     Exp = Act,
+    ok.
+
+delete2(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert(6, a, T0),
+    ?assertError({no_key, 7}, avl_tree:delete(7, T1)),
     ok.
 
 %% ===================================================================
