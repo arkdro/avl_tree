@@ -1,6 +1,7 @@
 -module(avl_tree).
 
 -export([
+         from_list/1,
          take_smallest/1,
          delete/2,
          delete_any/2,
@@ -51,6 +52,18 @@ subtree_lookup(Key, {_, _, _, Right}) ->
 
 size({Size, _}) ->
     Size.
+
+-spec from_list(List) -> Tree when
+      List :: [{Key, Value}],
+      Key :: key(),
+      Value :: value(),
+      Tree :: tree().
+
+from_list(List) ->
+    F = fun({K, V}, Acc) ->
+                insert_any(K, V, Acc)
+        end,
+    lists:foldl(F, new(), List).
 
 -spec insert_any(Key, Value, Tree) -> Tree2 when
       Tree :: tree(),
