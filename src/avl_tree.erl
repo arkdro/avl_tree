@@ -3,6 +3,7 @@
 -export([
          take_smallest/1,
          delete/2,
+         delete_any/2,
          insert/3,
          size/1,
          member/2,
@@ -205,6 +206,19 @@ member(Key, Tree) ->
             true;
         none ->
             false
+    end.
+
+-spec delete_any(Key, Tree) -> Tree2 when
+      Tree :: tree(),
+      Tree2 :: tree(),
+      Key :: key().
+
+delete_any(Key, Tree) ->
+    case member(Key, Tree) of
+        true ->
+            delete(Key, Tree);
+        false ->
+            Tree
     end.
 
 %% assume the key is in the tree
