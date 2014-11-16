@@ -70,9 +70,8 @@ insert1(Key, _, _) ->
     erlang:error({key_exists, Key}).
 
 proceed_with_balance_common(Root, Smaller, Bigger) ->
-    Height2 = calc_new_height(Smaller, Bigger),
     Balance = height(Smaller) - height(Bigger),
-    Subtree = {Height2, Root, Smaller, Bigger},
+    Subtree = make_subtree(Root, Smaller, Bigger),
     case is_balanced(Balance) of
         true ->
             Subtree;
@@ -147,11 +146,8 @@ calc_new_height(Subtree1, Subtree2) ->
 left_left_rotation({_, Root, Smaller, Bigger}) ->
     Smaller_smaller = get_smaller_subtree(Smaller), %% 3(A, B)
     Smaller_bigger = get_bigger_subtree(Smaller), %% C
-    Bigger2 = {calc_new_height(Smaller_bigger, Bigger),
-               Root, Smaller_bigger, Bigger}, %% 5(C, D)
-    {calc_new_height(Smaller_smaller, Bigger2),
-     get_root(Smaller),
-     Smaller_smaller, Bigger2}. %% 4(3, 5)
+    Bigger2 = make_subtree(Root, Smaller_bigger, Bigger), %% 5(C, D)
+    make_subtree(get_root(Smaller), Smaller_smaller, Bigger2). %% 4(3, 5)
 
 left_right_rotation(Subtree) ->
     New = left_right_rotation_step1(Subtree),
@@ -162,15 +158,13 @@ left_right_rotation_step1({_, Root, Smaller, Bigger}) ->
     Smaller_bigger = get_bigger_subtree(Smaller), %% 4(B, C)
     Smaller_bigger_smaller = get_smaller_subtree(Smaller_bigger), %% B
     Smaller_bigger_bigger = get_bigger_subtree(Smaller_bigger), %% C
-    Smaller_smaller2 = {calc_new_height(Smaller_smaller,
-                                        Smaller_bigger_smaller),
-                        get_root(Smaller),
-                        Smaller_smaller, Smaller_bigger_smaller}, %% 3(A, B)
-    Smaller2 = {calc_new_height(Smaller_smaller2, Smaller_bigger_bigger),
-                get_root(Smaller_bigger),
-                Smaller_smaller2,
-                Smaller_bigger_bigger}, %% 4(3, C)
-    {calc_new_height(Smaller2, Bigger), Root, Smaller2, Bigger}. %% 5(4, D)
+    Smaller_smaller2 = make_subtree(get_root(Smaller),
+                                    Smaller_smaller,
+                                    Smaller_bigger_smaller), %% 3(A, B)
+    Smaller2 = make_subtree(get_root(Smaller_bigger),
+                            Smaller_smaller2,
+                            Smaller_bigger_bigger), %% 4(3, C)
+    make_subtree(Root, Smaller2, Bigger). %% 5(4, D)
 
 right_left_rotation(Subtree) ->
     New = right_left_rotation_step1(Subtree),
@@ -181,22 +175,17 @@ right_left_rotation_step1({_, Root, Smaller, Bigger}) ->
     Bigger_smaller = get_smaller_subtree(Bigger), %% 4(B, C)
     Bigger_smaller_smaller = get_smaller_subtree(Bigger_smaller), %% B
     Bigger_smaller_bigger = get_bigger_subtree(Bigger_smaller), %% C
-    Bigger_bigger2 = {calc_new_height(Bigger_smaller_bigger, Bigger_bigger),
-                      get_root(Bigger),
-                      Bigger_smaller_bigger,
-                      Bigger_bigger}, %% 5(C, D)
-    Bigger2 = {calc_new_height(Bigger_smaller_smaller, Bigger_bigger2),
-               get_root(Bigger_smaller),
-               Bigger_smaller_smaller,
-               Bigger_bigger2}, %% 4(B, 5)
-    {calc_new_height(Smaller, Bigger2), Root, Smaller, Bigger2}. %% 3(A, 4)
+    Bigger_bigger2 = make_subtree(get_root(Bigger),
+                                  Bigger_smaller_bigger,
+                                  Bigger_bigger), %% 5(C, D)
+    Bigger2 = make_subtree(get_root(Bigger_smaller),
+                           Bigger_smaller_smaller,
+                           Bigger_bigger2), %% 4(B, 5)
+    make_subtree(Root, Smaller, Bigger2). %% 3(A, 4)
 
 right_right_rotation({_, Root, Smaller, Bigger}) ->
     Bigger_bigger = get_bigger_subtree(Bigger), %% 5(C, D)
     Bigger_smaller = get_smaller_subtree(Bigger), %% B
-    Smaller2 = {calc_new_height(Smaller, Bigger_smaller),
-                Root, Smaller, Bigger_smaller}, %% 3(A, B)
-    {calc_new_height(Smaller2, Bigger_bigger),
-     get_root(Bigger),
-     Smaller2, Bigger_bigger}. %% 4(3, 5)
+    Smaller2 = make_subtree(Root, Smaller, Bigger_smaller), %% 3(A, B)
+    make_subtree(get_root(Bigger), Smaller2, Bigger_bigger). %% 4(3, 5)
 
