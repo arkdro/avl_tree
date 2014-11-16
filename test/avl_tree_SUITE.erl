@@ -24,6 +24,8 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  delete4,
+                  delete3,
                   delete2,
                   delete1,
                   take_smallest1,
@@ -171,7 +173,52 @@ delete2(_) ->
     ?assertError({no_key, 7}, avl_tree:delete(7, T1)),
     ok.
 
+delete3(_) ->
+    Tree = tree1(),
+    Act = avl_tree:delete(7, Tree),
+    Exp = {7,
+           {3, {12,a},
+            {2, {5,d},
+             {0,{2,e},nil,nil},
+             {1,{9,f},nil,{0,{10,h},nil,nil}}
+            },
+            {1,{15,b},nil,{0,{20,c},nil,nil}}
+           }
+          },
+    Exp = Act,
+    ok.
+
+delete4(_) ->
+    Tree = tree1(),
+    Act = avl_tree:delete(9, Tree),
+    Exp = {7,
+           {3, {12,a},
+            {2, {5,d},
+             {0,{2,e},nil,nil},
+             {1,{10,h},{0,{7,g},nil,nil},nil}
+            },
+            {1,{15,b},nil,{0,{20,c},nil,nil}}
+           }
+          },
+    Exp = Act,
+    ok.
+
 %% ===================================================================
 %% Internal functions
 %% ===================================================================
+
+tree1() ->
+    L = [{12, a},
+         {15, b},
+         {20, c},
+         {5, d},
+         {2, e},
+         {9, f},
+         {7, g},
+         {10, h}],
+    Tree = lists:foldl(fun({K, V}, Acc) ->
+                               avl_tree:insert(K, V, Acc)
+                       end, avl_tree:new(), L),
+    %% ct:pal("tree: ~p", [Tree]),
+    Tree.
 
