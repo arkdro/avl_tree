@@ -218,12 +218,12 @@ proceed_delete1({_, _, Smaller, nil}) ->
     Smaller;
 proceed_delete1({_, _, nil, Bigger}) ->
     Bigger;
-proceed_delete1({_, _, Smaller, Bigger}) ->
-    {Successor, Bigger2} = take_successor(Bigger),
+proceed_delete1({_, _, Smaller, _} = Subtree) ->
+    {Successor, Bigger2} = take_successor(Subtree),
     make_subtree(Successor, Smaller, Bigger2).
 
-take_successor(Subtree) ->
-    take_smallest1(Subtree).
+take_successor({_, _, _, Bigger}) ->
+    take_smallest1(Bigger).
 
 -spec take_smallest(Tree) -> {Node, Tree2} when
       Tree :: tree(),
