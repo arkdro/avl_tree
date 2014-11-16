@@ -70,7 +70,7 @@ insert1(Key, _, _) ->
     erlang:error({key_exists, Key}).
 
 proceed_with_balance_common(Root, Smaller, Bigger) ->
-    Balance = height(Smaller) - height(Bigger),
+    Balance = calc_balance(Smaller, Bigger),
     Subtree = make_subtree(Root, Smaller, Bigger),
     case is_balanced(Balance) of
         true ->
@@ -137,6 +137,9 @@ which_longer(Subtree1, Subtree2) ->
        true ->
             equal
     end.
+
+calc_balance(Subtree1, Subtree2) ->
+    height(Subtree1) - height(Subtree2).
 
 calc_new_height(Subtree1, Subtree2) ->
     H1 = height(Subtree1),
