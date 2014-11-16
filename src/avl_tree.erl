@@ -314,7 +314,7 @@ take_smallest1({_, Root, Smaller, Bigger}) ->
       Tree :: tree(),
       Node :: root_node().
 
-smallest({Size, Subtree}) ->
+smallest({_, Subtree}) ->
     smallest1(Subtree).
 
 smallest1({_, Root, nil, _}) ->
