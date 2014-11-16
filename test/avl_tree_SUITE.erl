@@ -101,6 +101,27 @@ insert1(_) ->
     Exp3 = T3,
     ok.
 
+insert2(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert(3, a, T0),
+    Exp1 = {1, {0, {3, a}, nil, nil}},
+    Exp1 = T1,
+    T2 = avl_tree:insert(5, b, T1),
+    Exp2 = {2, {
+              1, {3, a},
+              nil,
+              {0, {5, b}, nil, nil}
+             }},
+    Exp2 = T2,
+    T3 = avl_tree:insert(4, c, T2),
+    Exp3 = {3, {
+              1, {4, c},
+              {0, {5, b}, nil, nil},
+              {0, {3, a}, nil, nil}
+             }},
+    Exp3 = T3,
+    ok.
+
 %% ===================================================================
 %% Internal functions
 %% ===================================================================
