@@ -30,6 +30,7 @@ groups() ->
                   delete2,
                   delete1,
                   take_smallest1,
+                  insert_any1,
                   insert3,
                   insert2,
                   insert1
@@ -144,6 +145,19 @@ insert3(_) ->
     T1 = avl_tree:insert(3, a, T0),
     T2 = avl_tree:insert(5, b, T1),
     ?assertError({key_exists, 5}, avl_tree:insert(5, c, T2)),
+    ok.
+
+insert_any1(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert_any(3, a, T0),
+    T2 = avl_tree:insert_any(5, b, T1),
+    T3 = avl_tree:insert_any(5, c, T2),
+    Exp = {2,
+           {1, {3, a},
+            nil,
+            {0, {5, c}, nil, nil}
+           }},
+    Exp = T3,
     ok.
 
 take_smallest1(_) ->
