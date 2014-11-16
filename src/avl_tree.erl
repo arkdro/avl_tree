@@ -3,6 +3,7 @@
 -export([
          from_list/1,
          take_smallest/1,
+         smallest/1,
          delete/2,
          delete_any/2,
          insert/3,
@@ -307,4 +308,17 @@ take_smallest1({_, Root, nil, Bigger}) ->
 take_smallest1({_, Root, Smaller, Bigger}) ->
     {Smallest, Smaller2} = take_smallest1(Smaller),
     {Smallest, make_subtree(Root, Smaller2, Bigger)}.
+
+%% assume the tree is non-empty
+-spec smallest(Tree) -> Node when
+      Tree :: tree(),
+      Node :: root_node().
+
+smallest({Size, Subtree}) ->
+    smallest1(Subtree).
+
+smallest1({_, Root, nil, _}) ->
+    Root;
+smallest1({_, _, Smaller, _}) ->
+    smallest1(Smaller).
 
