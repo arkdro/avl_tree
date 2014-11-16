@@ -242,6 +242,9 @@ tree1() ->
          {9, f},
          {7, g},
          {10, h}],
+    tree1(L).
+
+tree1(L) ->
     Tree = lists:foldl(fun({K, V}, Acc) ->
                                avl_tree:insert(K, V, Acc)
                        end, avl_tree:new(), L),
