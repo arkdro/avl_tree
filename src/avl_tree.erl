@@ -5,6 +5,7 @@
          delete/2,
          delete_any/2,
          insert/3,
+         insert_any/3,
          size/1,
          member/2,
          lookup/2,
@@ -50,6 +51,32 @@ subtree_lookup(Key, {_, _, _, Right}) ->
 
 size({Size, _}) ->
     Size.
+
+-spec insert_any(Key, Value, Tree) -> Tree2 when
+      Tree :: tree(),
+      Tree2 :: tree(),
+      Key :: key(),
+      Value :: value().
+
+insert_any(Key, Value, Tree) ->
+    case member(Key, Tree) of
+        true ->
+            update(Key, Value, Tree);
+        false ->
+            insert(Key, Value, Tree)
+    end.
+
+update(Key, Value, {Size, Subtree}) ->
+    {Size, update1(Key, Value, Subtree)}.
+
+update1(Key, Value, {_, {Key0, _}=Root, Smaller, Bigger}) when Key < Key0 ->
+    Smaller2 = update1(Key, Value, Smaller),
+    make_subtree(Root, Smaller2, Bigger);
+update1(Key, Value, {_, {Key0, _}=Root, Smaller, Bigger}) when Key > Key0 ->
+    Bigger2 = update1(Key, Value, Bigger),
+    make_subtree(Root, Smaller, Bigger2);
+update1(Key, Value, {_, _, Smaller, Bigger}) ->
+    make_subtree(new_root_node(Key, Value), Smaller, Bigger).
 
 %% assume the key is _not_ in the tree
 -spec insert(Key, Value, Tree) -> Tree2 when
