@@ -112,7 +112,7 @@ height({Height, _, _, _}) ->
 
 is_balanced(Height) when Height >= -1, Height =< 1 ->
     true;
-is_balanced(Height) when Height == -2, Height == 2 ->
+is_balanced(Height) when Height == -2; Height == 2 ->
     false.
 
 find_longer_side(Subtree) ->
