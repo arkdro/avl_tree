@@ -170,7 +170,23 @@ left_right_rotation_step1({_, Root, Smaller, Bigger}) ->
     {calc_new_height(Smaller2, Bigger), Root, Smaller2, Bigger}. %% 5(4, D)
 
 right_left_rotation(Subtree) ->
-    erlang:error(not_implemented).
+    New = right_left_rotation_step1(Subtree),
+    right_right_rotation(New).
+
+right_left_rotation_step1({_, Root, Smaller, Bigger}) ->
+    Bigger_bigger = get_bigger_subtree(Bigger), %% D
+    Bigger_smaller = get_smaller_subtree(Bigger), %% 4(B, C)
+    Bigger_smaller_smaller = get_smaller_subtree(Bigger_smaller), %% B
+    Bigger_smaller_bigger = get_bigger_subtree(Bigger_smaller), %% C
+    Bigger_bigger2 = {calc_new_height(Bigger_smaller_bigger, Bigger_bigger),
+                      get_root(Bigger),
+                      Bigger_smaller_bigger,
+                      Bigger_bigger}, %% 5(C, D)
+    Bigger2 = {calc_new_height(Bigger_smaller_smaller, Bigger_bigger2),
+               get_root(Bigger_smaller),
+               Bigger_smaller_smaller,
+               Bigger_bigger2}, %% 4(B, 5)
+    {calc_new_height(Smaller, Bigger2), Root, Smaller, Bigger2}. %% 3(A, 4)
 
 right_right_rotation({_, Root, Smaller, Bigger}) ->
     Bigger_bigger = get_bigger_subtree(Bigger), %% 5(C, D)
