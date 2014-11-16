@@ -21,6 +21,7 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  insert2,
                   insert1
                  ]},
      {read, [], [
@@ -116,8 +117,8 @@ insert2(_) ->
     T3 = avl_tree:insert(4, c, T2),
     Exp3 = {3, {
               1, {4, c},
-              {0, {5, b}, nil, nil},
-              {0, {3, a}, nil, nil}
+              {0, {3, a}, nil, nil},
+              {0, {5, b}, nil, nil}
              }},
     Exp3 = T3,
     ok.
