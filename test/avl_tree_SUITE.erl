@@ -24,6 +24,7 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  delete5,
                   delete4,
                   delete3,
                   delete2,
@@ -207,6 +208,11 @@ delete4(_) ->
            }
           },
     Exp = Act,
+    ok.
+
+delete5(_) ->
+    Tree = tree1(),
+    Tree = avl_tree:delete_any(99, Tree),
     ok.
 
 %% ===================================================================
