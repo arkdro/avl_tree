@@ -17,8 +17,12 @@ all() ->
 groups() ->
     [
      {all, [], [
+                {group, write},
                 {group, read}
                ]},
+     {write, [], [
+                  insert1
+                 ]},
      {read, [], [
                  size,
                  new_tree,
@@ -74,6 +78,27 @@ lookup4(_Config) ->
 size(_) ->
     0 = avl_tree:size(avl_tree:new()),
     4 = avl_tree:size({4, stub}),
+    ok.
+
+insert1(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert(5, a, T0),
+    Exp1 = {1, {0, {5, a}, nil, nil}},
+    Exp1 = T1,
+    T2 = avl_tree:insert(3, b, T1),
+    Exp2 = {2, {
+              1, {5, a},
+              {0, {3, b}, nil, nil},
+              nil
+             }},
+    Exp2 = T2,
+    T3 = avl_tree:insert(4, c, T2),
+    Exp3 = {3, {
+              1, {4, c},
+              {0, {3, b}, nil, nil},
+              {0, {5, a}, nil, nil}
+             }},
+    Exp3 = T3,
     ok.
 
 %% ===================================================================
