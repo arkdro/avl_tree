@@ -24,6 +24,7 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  from_list,
                   delete5,
                   delete4,
                   delete3,
@@ -227,6 +228,19 @@ delete4(_) ->
 delete5(_) ->
     Tree = tree1(),
     Tree = avl_tree:delete_any(99, Tree),
+    ok.
+
+from_list(_) ->
+    L = [{12, a},
+         {15, b},
+         {20, c},
+         {5, d},
+         {2, e},
+         {9, f},
+         {7, g},
+         {10, h}],
+    Tree = tree1(L),
+    Tree = avl_tree:from_list(L),
     ok.
 
 %% ===================================================================
