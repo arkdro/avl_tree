@@ -22,6 +22,7 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  take_smallest1,
                   insert3,
                   insert2,
                   insert1
@@ -130,6 +131,19 @@ insert3(_) ->
     T1 = avl_tree:insert(3, a, T0),
     T2 = avl_tree:insert(5, b, T1),
     ?_assertError(any_reason, avl_tree:insert(5, c, T2)),
+    ok.
+
+take_smallest1(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert(3, a, T0),
+    T2 = avl_tree:insert(5, b, T1),
+    Exp2 ={{3, a},
+           {1, {0, {5, b}, nil, nil}}},
+    Act2 = avl_tree:take_smallest(T2),
+    Exp2 = Act2,
+    Exp1 = {{3, a}, T0},
+    Act1 = avl_tree:take_smallest(T1),
+    Exp1 = Act1,
     ok.
 
 %% ===================================================================
