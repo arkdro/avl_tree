@@ -1,5 +1,6 @@
 -module(avl_tree_SUITE).
 
+-include_lib("eunit/include/eunit.hrl").
 -include_lib("common_test/include/ct.hrl").
 
 -compile([export_all]).
@@ -21,6 +22,7 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  insert3,
                   insert2,
                   insert1
                  ]},
@@ -121,6 +123,13 @@ insert2(_) ->
               {0, {5, b}, nil, nil}
              }},
     Exp3 = T3,
+    ok.
+
+insert3(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert(3, a, T0),
+    T2 = avl_tree:insert(5, b, T1),
+    ?_assertError(any_reason, avl_tree:insert(5, c, T2)),
     ok.
 
 %% ===================================================================
