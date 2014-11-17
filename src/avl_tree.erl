@@ -2,6 +2,7 @@
 
 -export([
          keys/1,
+         values/1,
          map/2,
          from_list/1,
          to_list/1,
@@ -410,4 +411,20 @@ keys1(nil, L) ->
     L;
 keys1({_, {Key, _}, Smaller, Bigger}, L) ->
     keys1(Smaller, [Key | keys1(Bigger, L)]).
+
+-spec values(Tree) -> List when
+      Tree :: tree(),
+      List :: [Value],
+      Value :: value().
+
+values({_, Subtree}) ->
+    values1(Subtree).
+
+values1(Subtree) ->
+    values1(Subtree, []).
+
+values1(nil, L) ->
+    L;
+values1({_, {_, Value}, Smaller, Bigger}, L) ->
+    values1(Smaller, [Value | values1(Bigger, L)]).
 
