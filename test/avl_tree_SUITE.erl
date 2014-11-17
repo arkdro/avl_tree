@@ -41,6 +41,7 @@ groups() ->
                   insert1
                  ]},
      {read, [], [
+                 keys1,
                  to_list2,
                  to_list1,
                  largest,
@@ -340,19 +341,28 @@ map3(_) ->
     T3e = avl_tree:map(F, T3),
     ok.
 
+keys1(_) ->
+    Keys = [Key || {Key, _} <- items1()],
+    Exp = lists:sort(Keys),
+    Exp = avl_tree:keys(tree1()),
+    ok.
+
 %% ===================================================================
 %% Internal functions
 %% ===================================================================
 
+items1() ->
+    [{12, a},
+     {15, b},
+     {20, c},
+     {5, d},
+     {2, e},
+     {9, f},
+     {7, g},
+     {10, h}].
+
 tree1() ->
-    L = [{12, a},
-         {15, b},
-         {20, c},
-         {5, d},
-         {2, e},
-         {9, f},
-         {7, g},
-         {10, h}],
+    L = items1(),
     tree1(L).
 
 tree1(L) ->
