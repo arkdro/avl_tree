@@ -1,6 +1,7 @@
 -module(avl_tree).
 
 -export([
+         keys/1,
          map/2,
          from_list/1,
          to_list/1,
@@ -393,4 +394,20 @@ map1(Fun, {_, {Key, Value}, Smaller, Bigger}) ->
     make_subtree(new_root_node(Key, Fun(Key, Value)),
                  map1(Fun, Smaller),
                  map1(Fun, Bigger)).
+
+-spec keys(Tree) -> List when
+      Tree :: tree(),
+      List :: [Key],
+      Key :: key().
+
+keys({_, Subtree}) ->
+    keys1(Subtree).
+
+keys1(Subtree) ->
+    keys1(Subtree, []).
+
+keys1(nil, L) ->
+    L;
+keys1({_, {Key, _}, Smaller, Bigger}, L) ->
+    keys1(Smaller, [Key | keys1(Bigger, L)]).
 
