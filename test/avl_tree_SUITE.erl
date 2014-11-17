@@ -24,6 +24,9 @@ groups() ->
                 {group, read}
                ]},
      {write, [], [
+                  map3,
+                  map2,
+                  map1,
                   from_list,
                   delete5,
                   delete4,
@@ -303,6 +306,38 @@ to_list1(_) ->
 
 to_list2(_) ->
     [] = avl_tree:to_list(avl_tree:new()),
+    ok.
+
+map1(_) ->
+    Tree = avl_tree:insert(1, a, avl_tree:new()),
+    F = fun(_K, V) ->
+                V
+        end,
+    Tree = avl_tree:map(F, Tree),
+    ok.
+
+map2(_) ->
+    Tree = tree1(),
+    F = fun(_K, V) ->
+                V
+        end,
+    trc_util:start([avl_tree]),
+    Tree = avl_tree:map(F, Tree),
+    trc_util:stop(),
+    ok.
+
+map3(_) ->
+    T0 = avl_tree:new(),
+    T1 = avl_tree:insert(6, 1, T0),
+    T2 = avl_tree:insert(3, 2, T1),
+    T3 = avl_tree:insert(7, 3, T2),
+    T1e = avl_tree:insert_any(6, 11, T0),
+    T2e = avl_tree:insert_any(3, 22, T1e),
+    T3e = avl_tree:insert_any(7, 33, T2e),
+    F = fun(_K, V) ->
+                V * 11
+        end,
+    T3e = avl_tree:map(F, T3),
     ok.
 
 %% ===================================================================
