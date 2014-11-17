@@ -1,6 +1,7 @@
 -module(avl_tree).
 
 -export([
+         map/2,
          from_list/1,
          to_list/1,
          take_smallest/1,
@@ -374,4 +375,22 @@ largest1({_, Root, _, nil}) ->
     Root;
 largest1({_, _, _, Bigger}) ->
     largest1(Bigger).
+
+-spec map(Fun, Tree) -> Tree2 when
+      Tree :: tree(),
+      Tree2 :: tree(),
+      Fun :: fun((Key, Value1) -> Value2),
+      Key :: key(),
+      Value1 :: value(),
+      Value2 :: value().
+
+map(Fun, {Size, Subtree}) when is_function(Fun, 2) ->
+    {Size, map1(Fun, Subtree)}.
+
+map1(_, nil) ->
+    nil;
+map1(Fun, {_, {Key, Value}, Smaller, Bigger}) ->
+    make_subtree(new_root_node(Key, Fun(Key, Value)),
+                 map1(Fun, Smaller),
+                 map1(Fun, Bigger)).
 
