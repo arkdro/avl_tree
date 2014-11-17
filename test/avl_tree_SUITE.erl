@@ -42,6 +42,7 @@ groups() ->
                  ]},
      {read, [], [
                  keys1,
+                 values1,
                  to_list2,
                  to_list1,
                  largest,
@@ -345,6 +346,11 @@ keys1(_) ->
     Keys = [Key || {Key, _} <- items1()],
     Exp = lists:sort(Keys),
     Exp = avl_tree:keys(tree1()),
+    ok.
+
+values1(_) ->
+    Exp = [Value || {_, Value} <-  lists:sort(items1())],
+    Exp = avl_tree:values(tree1()),
     ok.
 
 %% ===================================================================
