@@ -317,7 +317,7 @@ proceed_delete1({_, _, nil, Bigger}) ->
     Bigger;
 proceed_delete1({_, _, Smaller, _} = Subtree) ->
     {Successor, Bigger2} = take_successor(Subtree),
-    make_subtree(Successor, Smaller, Bigger2).
+    proceed_with_balance_common(Successor, Smaller, Bigger2).
 
 take_successor({_, _, _, Bigger}) ->
     take_smallest1(Bigger).
