@@ -19,12 +19,12 @@ check_height1({H, Root, Smaller, Bigger}) ->
                 ok when Max_inc =:= H ->
                     ok;
                 ok ->
-                    {error, {bad_current_height, [{h, H}, {h1, Height1},
-                                                  {h2, Height2},
-                                                  {root, Root}]}};
+                    {error, {bad_current_height, [{root, Root},
+                                                  {h, H}, {h1, Height1},
+                                                  {h2, Height2}]}};
                 {error, D} ->
-                    {error, {bad_balance, [{delta, D}, {h1, Height1},
-                                           {h2, Height2}, {root, Root}]}}
+                    {error, {bad_balance, [{root, Root}, {delta, D},
+                                           {h1, Height1}, {h2, Height2}]}}
             end;
         {ok, {error, Reason} = Error} ->
             Error;
