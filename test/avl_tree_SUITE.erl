@@ -28,6 +28,7 @@ groups() ->
                   map2,
                   map1,
                   from_list,
+                  delete9,
                   delete8,
                   delete7,
                   delete6,
@@ -342,6 +343,16 @@ delete8(_) ->
     ok = check_util:check_height(Act),
     ok.
 
+delete9(_) ->
+    Tree = tree5(),
+    ok = check_util:check_height(Tree),
+    To_del = [
+              595, 475, 793, 141, 528, 736, 570, 162, 268, 485,
+              52, 922, 603, 148, 365, 279, 636, 334, 442, 416
+             ],
+    lists:foldl(fun delete_one_key/2, Tree, To_del),
+    ok.
+
 from_list(_) ->
     L = [{12, a},
          {15, b},
@@ -492,4 +503,48 @@ items4() ->
 
 tree4() ->
     avl_tree:from_list(items4()).
+
+tree5() ->
+    {30,
+     {5, {442,47},
+      {4, {268,639},
+       {3, {148,108},
+        {2, {24,241},
+         {0,{4,240},nil,nil},
+         {1,
+          {52,48}, nil,
+          {0, {141,33}, nil,nil}}},
+        {1, {162,853},
+         {0, {151,648}, nil,nil},
+         {0, {183,468}, nil,nil}}},
+       {2, {365,467},
+        {1, {279,187},
+         nil,
+         {0, {334,922}, nil,nil}},
+        {1, {400,63},
+         nil,
+         {0, {416,325}, nil,nil}}}},
+      {4, {734,164},
+       {3, {570,250},
+        {2, {528,716},
+         {1, {485,753},
+          {0, {475,261}, nil,nil},
+          nil},
+         {0, {537,377}, nil,nil}},
+        {1, {603,71},
+         {0, {595,382}, nil,nil},
+         {0, {636,689}, nil,nil}}},
+       {2, {804,980},
+        {1, {789,365},
+         {0, {736,970}, nil,nil},
+         {0, {793,478}, nil,nil}},
+        {1, {922,482},
+         nil,
+         {0, {981,48}, nil,nil}}}}}}
+        .
+
+delete_one_key(Key, Tree) ->
+    Res = avl_tree:delete(Key, Tree),
+    ok = check_util:check_height(Res),
+    Res.
 
