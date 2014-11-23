@@ -28,6 +28,7 @@ groups() ->
                   map2,
                   map1,
                   from_list,
+                  delete10,
                   delete9,
                   delete8,
                   delete7,
@@ -353,6 +354,13 @@ delete9(_) ->
     lists:foldl(fun delete_one_key/2, Tree, To_del),
     ok.
 
+delete10(_) ->
+    Tree = tree6(),
+    ok = check_util:check_height(Tree),
+    To_del = [334, 442, 416],
+    lists:foldl(fun delete_one_key/2, Tree, To_del),
+    ok.
+
 from_list(_) ->
     L = [{12, a},
          {15, b},
@@ -543,7 +551,23 @@ tree5() ->
          {0, {981,48}, nil,nil}}}}}}
         .
 
+tree6() ->
+    {13,
+     {4, {442,47},
+      {3, {334,922},
+       {2, {151,648},
+        {1,{24,241},{0,{4,240},nil,nil},nil},
+        {0,{183,468},nil,nil}},
+       {1,{400,63},nil,{0,{416,325},nil,nil}}},
+      {2, {734,164},
+       {0,{537,377},nil,nil},
+       {1, {804,980},
+        {0,{789,365},nil,nil},
+        {0,{981,48},nil,nil}}}}}
+        .
+
 delete_one_key(Key, Tree) ->
+    ok = check_util:check_height(Tree),
     Res = avl_tree:delete(Key, Tree),
     ok = check_util:check_height(Res),
     Res.
