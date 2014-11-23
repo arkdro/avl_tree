@@ -366,7 +366,7 @@ take_largest1({_, Root, Smaller, nil}) ->
     {Root, Smaller};
 take_largest1({_, Root, Smaller, Bigger}) ->
     {Largest, Bigger2} = take_largest1(Bigger),
-    {Largest, make_subtree(Root, Smaller, Bigger2)}.
+    {Largest, proceed_with_balance_common(Root, Smaller, Bigger2)}.
 
 %% assume the tree is non-empty
 -spec largest(Tree) -> Node when
