@@ -336,7 +336,7 @@ take_smallest1({_, Root, nil, Bigger}) ->
     {Root, Bigger};
 take_smallest1({_, Root, Smaller, Bigger}) ->
     {Smallest, Smaller2} = take_smallest1(Smaller),
-    {Smallest, make_subtree(Root, Smaller2, Bigger)}.
+    {Smallest, proceed_with_balance_common(Root, Smaller2, Bigger)}.
 
 %% assume the tree is non-empty
 -spec smallest(Tree) -> Node when
