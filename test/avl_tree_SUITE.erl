@@ -28,6 +28,7 @@ groups() ->
                   map2,
                   map1,
                   from_list,
+                  delete6,
                   delete5,
                   delete4,
                   delete3,
@@ -279,6 +280,24 @@ delete5(_) ->
     Tree = avl_tree:delete_any(99, Tree),
     ok.
 
+delete6(_) ->
+    Tree = tree2(),
+    Act = avl_tree:delete(32, Tree),
+    Exp = {8, {3, {62, c},
+               {2, {44, a},
+                {0, {17, b}, nil, nil},
+                {1, {50, e},
+                 {0, {48, g}, nil, nil},
+                 {0, {54, h}, nil, nil}
+                }
+               },
+               {1, {78, f},
+                nil,
+                {0, {88, i}, nil, nil}}
+            }},
+    Exp = Act,
+    ok.
+
 from_list(_) ->
     L = [{12, a},
          {15, b},
@@ -377,4 +396,20 @@ tree1(L) ->
                        end, avl_tree:new(), L),
     %% ct:pal("tree: ~p", [Tree]),
     Tree.
+
+items2() ->
+    [
+     {44, a},
+     {17, b},
+     {62, c},
+     {32, d},
+     {50, e},
+     {78, f},
+     {48, g},
+     {54, h},
+     {88, i}
+    ].
+
+tree2() ->
+    avl_tree:from_list(items2()).
 
