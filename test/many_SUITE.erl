@@ -41,6 +41,12 @@ compare_with_sort(Config) ->
     ct:pal("tests: ~p, items: ~p", [Tests, Items]),
     ok.
 
+add_and_del(Config) ->
+    Dur = set_timeout(Config),
+    {Tests, Items} = add_and_del_till_timeout(Config, Dur),
+    ct:pal("add and del tests: ~p, items: ~p", [Tests, Items]),
+    ok.
+
 %% ===================================================================
 %% Internal functions
 %% ===================================================================
@@ -92,6 +98,39 @@ compare_with_sort_one_item(Config) ->
             erlang:error(data_mismatch)
     end.
 
+add_and_del_till_timeout(Config, Dur) ->
+    Cur = timestamp(),
+    Stop = Cur + Dur - 1,
+    add_and_del_till_timeout(Config, Cur, Stop, 0, 0).
+
+add_and_del_till_timeout(_, Cur, Stop, Tests, Items) when Cur > Stop ->
+    {Tests, Items};
+add_and_del_till_timeout(Config, _, Stop, Tests, Items) ->
+    Items2 = add_and_del_one_item(Config),
+    add_and_del_till_timeout(Config, timestamp(), Stop, Tests + 1,
+                                   Items + Items2).
+
+add_and_del_one_item(Config) ->
+    {Data, To_del, Deleted} = gen_data_for_add_and_del(Config),
+    Tree = avl_tree:from_list(Data),
+    Tree2 = delete_items(Tree, To_del),
+    List = avl_tree:to_list(Tree2),
+    Sorted = lists:sort(List),
+    Len = length(Sorted),
+    case List of
+        Sorted ->
+            Len;
+        _ ->
+            ct:log("data mismatch, len=~p~ndata:~n~p~nafter tree:~n~p~n",
+                   [Len, Sorted, List]),
+            erlang:error(data_mismatch)
+    end.
+
+delete_items(Tree, To_del) ->
+    lists:foldl(fun({Key, _}, Acc) ->
+                        avl_tree:delete(Key, Acc)
+                end, Tree, To_del).
+
 timestamp() ->
     timestamp(os:timestamp()).
 
@@ -106,3 +145,20 @@ gen_data(Config) ->
     Keys2 = sets:to_list(sets:from_list(Keys)),
     [{Key, random:uniform(Max_val)} || Key <- Keys2].
 
+gen_data_for_add_and_del(Config) ->
+    L = gen_data(Config),
+    All = sets:from_list(L),
+    Ndel = random:uniform(sets:size(All)),
+    Shuffled = shuffle(L),
+    To_del = lists:sublist(Shuffled, Ndel),
+    To_del_set = sets:from_list(To_del),
+    Del_set = sets:subtract(All, To_del_set),
+    Deleted = sets:to_list(Del_set),
+    {L, To_del, Deleted}.
+
+
+shuffle(L) ->
+    L2 = [{random:uniform(), X} || X <- L],
+    L3 = lists:sort(L2),
+    L4 = [X || {_, X} <- L3],
+    L4.
