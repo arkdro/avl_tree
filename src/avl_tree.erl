@@ -1,6 +1,7 @@
 -module(avl_tree).
 
 -export([
+         height/1,
          keys/1,
          values/1,
          map/2,
