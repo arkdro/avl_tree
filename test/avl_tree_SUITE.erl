@@ -38,6 +38,7 @@ groups() ->
                   delete3,
                   delete2,
                   delete1,
+                  take_largest2,
                   take_largest1,
                   take_smallest2,
                   take_smallest1,
@@ -239,6 +240,17 @@ take_largest1(_) ->
     Exp1 = {{3, a}, T0},
     Act1 = avl_tree:take_largest(T1),
     Exp1 = Act1,
+    ok.
+
+take_largest2(_) ->
+    Tree = avl_tree:from_list([{5, a}, {3, b}, {10, c}, {15, d}]),
+    Act = avl_tree:take_largest(Tree),
+    Exp = {{15,d},
+           {3,{1,{5,a},
+               {0,{3,b},nil,nil},
+               {0,{10,c},nil,nil}}}
+          },
+    Exp = Act,
     ok.
 
 delete1(_) ->
