@@ -39,6 +39,7 @@ groups() ->
                   delete2,
                   delete1,
                   take_largest1,
+                  take_smallest2,
                   take_smallest1,
                   insert_any1,
                   insert3,
@@ -214,6 +215,17 @@ take_smallest1(_) ->
     Exp1 = {{3, a}, T0},
     Act1 = avl_tree:take_smallest(T1),
     Exp1 = Act1,
+    ok.
+
+take_smallest2(_) ->
+    Tree = avl_tree:from_list([{5, a}, {3, b}, {10, c}, {15, d}]),
+    Act = avl_tree:take_smallest(Tree),
+    Exp = {{3,b},
+           {3,{1,{10,c},
+               {0,{5,a},nil,nil},
+               {0,{15,d},nil,nil}}}
+          },
+    Exp = Act,
     ok.
 
 take_largest1(_) ->
