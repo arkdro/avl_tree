@@ -386,9 +386,7 @@ map2(_) ->
     F = fun(_K, V) ->
                 V
         end,
-    trc_util:start([avl_tree]),
     Tree = avl_tree:map(F, Tree),
-    trc_util:stop(),
     ok.
 
 map3(_) ->
