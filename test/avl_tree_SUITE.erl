@@ -198,6 +198,7 @@ insert_any1(_) ->
             {0, {5, c}, nil, nil}
            }},
     Exp = T3,
+    ok = check_util:check_height(T3),
     ok.
 
 take_smallest1(_) ->
@@ -239,6 +240,7 @@ delete1(_) ->
             {0, {6, a}, nil, nil}
            }},
     Exp = Act,
+    ok = check_util:check_height(Act),
     ok.
 
 delete2(_) ->
@@ -260,6 +262,7 @@ delete3(_) ->
            }
           },
     Exp = Act,
+    ok = check_util:check_height(Act),
     ok.
 
 delete4(_) ->
@@ -275,11 +278,13 @@ delete4(_) ->
            }
           },
     Exp = Act,
+    ok = check_util:check_height(Act),
     ok.
 
 delete5(_) ->
     Tree = tree1(),
     Tree = avl_tree:delete_any(99, Tree),
+    ok = check_util:check_height(Tree),
     ok.
 
 delete6(_) ->
@@ -298,6 +303,7 @@ delete6(_) ->
                 {0, {88, i}, nil, nil}}
             }},
     Exp = Act,
+    ok = check_util:check_height(Act),
     ok.
 
 delete7(_) ->
@@ -315,6 +321,7 @@ delete7(_) ->
              {0,{54,h},nil,nil},
              {1,{78,f},nil,{0,{88,i},nil,nil}}}}},
     Exp = Act,
+    ok = check_util:check_height(Act),
     ok.
 
 delete8(_) ->
@@ -332,6 +339,7 @@ delete8(_) ->
              {1,{54,h},nil,{0,{55,l},nil,nil}},
              {1,{78,f},nil,{0,{88,i},nil,nil}}}}},
     Exp = Act,
+    ok = check_util:check_height(Act),
     ok.
 
 from_list(_) ->
