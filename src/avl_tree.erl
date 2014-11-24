@@ -155,6 +155,8 @@ rebalance(2, {_, _, Smaller, _} = Subtree) ->
     case find_longer_side(Smaller) of
         left ->
             left_left_rotation(Subtree);
+        equal ->
+            left_left_rotation(Subtree);
         right ->
             left_right_rotation(Subtree)
     end;
