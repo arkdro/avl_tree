@@ -22,7 +22,7 @@ groups() ->
      {all, [], [
                 {group, compare}
                ]},
-     {compare, [], [
+     {compare, [parallel], [
                  add_and_del,
                  compare_with_sort
                 ]}
