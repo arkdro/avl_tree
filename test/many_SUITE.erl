@@ -31,20 +31,20 @@ groups() ->
 init_per_suite(Config) ->
     random:seed(now()),
     Local = local_config(Config),
-    New = [{local, Local} | Config],
-    set_timeout(New),
-    New.
+    [{local, Local} | Config].
 
 end_per_suite(_Config) ->
     ok.
 
 compare_with_sort(Config) ->
+    set_timeout(Config),
     Dur = get_duration(Config),
     {Tests, Items} = compare_with_sort_till_timeout(Config, Dur),
     ct:pal("tests: ~p, items: ~p", [Tests, Items]),
     ok.
 
 add_and_del(Config) ->
+    set_timeout(Config),
     Dur = get_duration(Config),
     {Tests, Items} = add_and_del_till_timeout(Config, Dur),
     ct:pal("add and del tests: ~p, items: ~p", [Tests, Items]),
