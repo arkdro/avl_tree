@@ -31,19 +31,21 @@ groups() ->
 init_per_suite(Config) ->
     random:seed(now()),
     Local = local_config(Config),
-    [{local, Local} | Config].
+    New = [{local, Local} | Config],
+    set_timeout(New),
+    New.
 
 end_per_suite(_Config) ->
     ok.
 
 compare_with_sort(Config) ->
-    Dur = set_timeout(Config),
+    Dur = get_duration(Config),
     {Tests, Items} = compare_with_sort_till_timeout(Config, Dur),
     ct:pal("tests: ~p, items: ~p", [Tests, Items]),
     ok.
 
 add_and_del(Config) ->
-    Dur = set_timeout(Config),
+    Dur = get_duration(Config),
     {Tests, Items} = add_and_del_till_timeout(Config, Dur),
     ct:pal("add and del tests: ~p, items: ~p", [Tests, Items]),
     ok.
@@ -57,11 +59,15 @@ get_local_value(Key, Config) ->
     proplists:get_value(Key, Local).
 
 set_timeout(Config) ->
+    Dur = get_duration(Config),
+    T = {seconds, Dur + 300},
+    ct:timetrap(T).
+
+get_duration(Config) ->
     case get_local_value(duration, Config) of
         undefined ->
             30;
         Val ->
-            ct:timetrap({seconds, Val + 5}),
             Val
     end.
 
