@@ -23,6 +23,7 @@ groups() ->
                 {group, compare}
                ]},
      {compare, [], [
+                 add_and_del,
                  compare_with_sort
                 ]}
     ].
