@@ -115,14 +115,16 @@ add_and_del_one_item(Config) ->
     Tree = avl_tree:from_list(Data),
     Tree2 = delete_items(Tree, To_del),
     List = avl_tree:to_list(Tree2),
-    Sorted = lists:sort(List),
-    Len = length(Sorted),
+    Deleted_sorted = lists:sort(Deleted),
+    Len = length(Deleted_sorted),
+    Check_result = check_util:check_height(Tree2),
     case List of
-        Sorted ->
+        Deleted_sorted when Check_result == ok ->
             Len;
         _ ->
-            ct:log("data mismatch, len=~p~ndata:~n~p~nafter tree:~n~p~n",
-                   [Len, Sorted, List]),
+            ct:log("data mismatch, len=~p~ndata:~n~p~nafter tree:~n~p~n"
+                   "check_result:~n~p~n",
+                   [Len, Deleted_sorted, List, Check_result]),
             erlang:error(data_mismatch)
     end.
 
